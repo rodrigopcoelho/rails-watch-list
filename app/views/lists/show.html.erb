@@ -1,0 +1,85 @@
+
+<%= render "components/banner", text:  @list.bookmarks.length == 1 ? "#{@list.bookmarks.length} Movie" : "#{@list.bookmarks.length} Movies"   , title: "#{@list.name}" %>
+
+<div class="container">
+
+  <%= link_to(new_list_bookmark_path(@list)) do %>
+  <button type="button" class="btn backgradient btn-lg text-white mt-5" >Add a movie</button>
+  <% end %>
+
+
+
+  <div class="cards mt-5">
+     <% @list.bookmarks.each do |bookmark| %>
+      <%= render "components/bookmarkcard", url: bookmark.movie.poster_url , moviename:bookmark.movie.title, rating:bookmark.movie.rating, overview:truncate(bookmark.movie.overview, :length => 90), comment:bookmark.comment, id: bookmark.id %>
+     <% end %>
+  </div>
+
+  <div class="d-flex mb-5">
+        <div  style="width:50%;flex-grow:1" >
+          <h1> Reviews </h1>
+          <div class="d-flex justify-content-center">
+          <% if @list.reviews.empty?  %>
+            <h2 class="text-muted mt-5"> There's no comments yet..</h2>
+          <% else %>
+          <% @list.reviews.each do |review| %>
+                <div class="card-body p-4">
+                  <div class="card shadow rounded border-0 mb-4 bg-white">
+                    <div class="card-body">
+                      <p><%= review.content %></p>
+                        <div class="d-flex justify-content-between">
+                          <div class="d-flex flex-row align-items-center">
+                             <%= "⭐" * review.stars %>
+
+                          </div>
+                          <div class="text-muted fs-6 text fst-italic">
+                          1 min ago
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <% end %>
+                <% end %>
+              </div>
+
+
+        </div>
+
+    <div  style="width:50%;flex-grow:1">
+
+    <div class="d-flex justify-content-center">
+
+        <div class="card shadow rounded border-0 bg-white">
+          <div class="card-body p-4">
+            <div class="d-flex flex-start w-100">
+              <div class="w-100">
+                <h5>Add a comment</h5>
+                <%= simple_form_for [@list, @review] do |f| %>
+                <ul class="list-group list-group-horizontal ">
+                      <% i= 1%>
+                      <%= f.collection_radio_buttons :stars, [[1], [2], [3], [4], [5]], :first, :last, item_wrapper_tag: false, boolean_style: :inline do |b| %>
+                        <li class="list-group-item bg-white border-0 "> <%= b.radio_button + b.label {"#{i} ⭐"} %> </li>
+                        <% i= i +1%>
+                      <% end %>
+
+                       </ul>
+                    <div class="form-outline mt-2">
+                      <%= f.input :content %>
+                      <label class="form-label" for="textAreaExample">What is your view?</label>
+                    </div>
+                    <div class="d-flex justify-content-between mt-3">
+                      <%= f.submit "Create a Review", class: "btn backgradient text-white" %>
+                    </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+</div>

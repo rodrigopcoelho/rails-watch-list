@@ -1,0 +1,14 @@
+<%= render "components/banner", text: "Save any kind of movies", title: "Lister" %>
+
+<div class="container">
+  <div class="cards mt-4">
+    <% @lists.each do |list|%>
+      <%= link_to(list_path(list.id), class: "text-decoration-none" ) do %>
+        <div class="card-category backgradient mb-5" >
+          <%= list.name %>
+        </div>
+      <% end %>
+    <% end%>
+
+  </div>
+</div>
